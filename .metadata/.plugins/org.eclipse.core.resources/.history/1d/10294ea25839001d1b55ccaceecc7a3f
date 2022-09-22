@@ -1,0 +1,29 @@
+/*
+ * misFunciones.h
+ *
+ *  Created on: 15 sept 2022
+ *      Author: herni
+ */
+
+#ifndef CALCULOS_H_
+#define CALCULOS_H_
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+#include "inputs.h"
+
+
+void ElegirCondeferacion(int* contAFC, int* contCAF, int* contCONCACAF, int* contCONMEBOL, int* contUEFA, int* contOFC);
+
+float CalcularPromedio(int *contador, int* contadorTotal);
+
+int CalcularMantenimiento(int* resultado, int* costoHospedaje, int* costoComida, int* costoTransporte);
+
+int VerificarExistenGastos(int *transporte, int* hospedaje, int* comida);
+
+
+#endif /* CALCULOS_H_ */

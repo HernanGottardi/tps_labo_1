@@ -1,0 +1,28 @@
+/*
+ * misFunciones.h
+ *
+ *  Created on: 15 sept 2022
+ *      Author: herni
+ */
+
+#ifndef MISFUNCIONES_H_
+#define MISFUNCIONES_H_
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+#include "validaciones.h"
+
+void ElegirCondeferacion(int* opcionConfe);
+
+void SumarContadorConfe (int* contadorConfe, int* opcionConfe);
+
+int CalcularPromedio(int *prom, int *contador, int totalJugadores);
+
+int CalcularMantenimiento(int* resultado, int* costoHospedaje, int* costoComida, int* costoTransporte);
+
+
+#endif /* MISFUNCIONES_H_ */

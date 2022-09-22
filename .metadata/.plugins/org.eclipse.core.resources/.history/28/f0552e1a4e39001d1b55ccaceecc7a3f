@@ -1,0 +1,95 @@
+/*
+ * misFunciones.c
+ *
+ *  Created on: 15 sept 2022
+ *      Author: herni
+ */
+
+#include "misFunciones.h"
+
+/*
+ int contadorAFC = 0;
+ int contadorCAF = 0;
+ int contadorCONCACAF = 0;
+ int contadorCONMEBOL = 0;
+ int contadorUEFA = 0;
+ int contadorOFC = 0;
+ */
+
+void ElegirCondeferacion(int *contAFC, int *contCAF, int *contCONCACAF,
+		int *contCONMEBOL, int *contUEFA, int *contOFC) {
+
+	int opcion;
+	printf("\nLista de confederaciones: ");
+
+	printf("\n1 - AFC");
+	printf("\n2 - CAF");
+	printf("\n3 - CONCACAF");
+	printf("\n4 - CONMEBOL");
+	printf("\n5 - UEFA");
+	printf("\n6 - OFC");
+
+	utn_getNumero(&opcion, "\nIngresar CONFEDERACION del jugador:",
+			"\nError, no esta en el rango", 1, 6, 3);
+
+	switch (opcion) {
+	case 1:
+		*contAFC = *contAFC + 1;
+		break;
+	case 2:
+		*contCAF = *contCAF + 1;
+		break;
+	case 3:
+		*contCONCACAF = *contCONCACAF + 1;
+		break;
+	case 4:
+		*contCONMEBOL = *contCONMEBOL + 1;
+		break;
+	case 5:
+		*contUEFA = *contUEFA + 1;
+		break;
+	case 6:
+		*contOFC = *contOFC + 1;
+		break;
+	}
+}
+
+void ElegirCamiseta(int* numCam){
+	printf("\nQue numero tiene en la camiseta este juagdor?");
+
+}
+
+/*
+ int promedioAFC;
+ int promedioCAF;
+ int promedioCONCACAF;
+ int promedioCONMEBOL;
+ int promedioUEFA;
+ int promedioOFC;
+ */
+
+float CalcularPromedio(int *contador, int* contadorTotal) {
+	float bufferPorcen;
+	bufferPorcen =  (float)*contador / *contadorTotal;
+	return bufferPorcen;
+}
+
+int VerificarExistenGastos(int *transporte, int* hospedaje, int* comida) {
+	int retorno = 1;
+	if(*transporte == 0  || *hospedaje == 0 || *comida == 0){
+		retorno = 0;
+	}
+	return retorno;
+}
+
+int CalcularMantenimiento(int *resultado, int *costoHospedaje, int *costoComida,
+		int *costoTransporte) {
+	int retorno = 1;
+	if (costoHospedaje >= 0 && costoComida >= 0 && costoTransporte >= 0) {
+		*resultado = *costoHospedaje + *costoComida + *costoTransporte;
+	} else {
+		retorno = 0;
+	}
+	return retorno;
+}
+

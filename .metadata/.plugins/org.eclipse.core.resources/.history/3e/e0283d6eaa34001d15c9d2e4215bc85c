@@ -1,0 +1,128 @@
+/*
+ * validaciones.c
+ *
+ *  Created on: 14 sept 2022
+ *      Author: herni
+ */
+
+#include "validaciones.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int utn_getCaracter(char *pResultado, char *mensaje, char *mensajeError,
+
+		char minimo, char maximo, int reintentos) {
+
+	int retorno = 0; // Le cargo el valor de error.
+	// Puede cambiar en el desarrollo si todo sale bien.
+
+	char buffer; // Area de intercambio, lugar donde voy a dejar eso
+	// que acaba de ingresar el usuario y yo todavia no valide.
+
+	// --------------------------------------------------------------
+
+	// COMPROBAR QUE PARAMETROS SON CORRECTOS:
+
+	// Podemos validar si un puntero es distinto de NULL.
+	// Y nos permite ver si la variable tiene cargada una direccion de memoria.
+
+	//minimo siempre debe ser menor a maximo, o igual en casop de solo querer un caracter.
+
+	if (pResultado != NULL && mensaje != NULL && mensajeError != NULL
+			&& minimo <= maximo && reintentos >= 0) {
+
+		// Un do-while para chequear intentos.
+		do
+		{
+			printf("%s", mensaje);
+			fflush(stdin);
+			scanf("%c", &buffer);
+			// COMPROBAR QUE EL INGRESO ESTE BIEN
+			if (buffer >= minimo && buffer <= maximo) {
+				*pResultado = buffer;
+				retorno = 1; // Salio bien
+				break; // rompe iteracion
+			}
+			printf("%s", mensajeError);
+			reintentos--;
+		} while (reintentos >= 0); //para cuando sea -1.
+
+	}
+
+	return retorno;
+}
+
+// Verifica que en cada lugar de una cadena haya numeros
+
+int esNumerica(char *cadena) {
+	int retorno = 0;
+	int i = 0;
+
+	// Solo se acepta un simbolo "-" si esta en la primera posicion.
+
+	if (cadena[0] == '-') {
+		i = 1;
+	}
+
+	for (; cadena[i] != '\0'; i++) {
+		// Los valores de 9 y 0 son sacados de ascci y estan en orden.
+		if (cadena[i] > '9' || cadena[i] < '0') {
+			break;
+		} else {
+			retorno = 1;
+
+		}
+	}
+	return retorno;
+}
+
+//----------------------------------------------------------------
+
+// Nos devuelve un Int. Param: un lugar donde dejar el resultado.
+// Funcion que devuelve si salio bien o mal.
+// Version mejorada de scanf().
+
+int getInt(int *pResultado) {
+	int retorno = 0;
+	char buffer[4096];
+    fflush(stdin);
+	scanf("%s", buffer);
+	if (esNumerica(buffer)) { // es numerica confirma que realmente se trate de numeros textuales.
+		retorno = 1;
+		*pResultado = atoi(buffer); // funcion q convierte cadena en numero. ejemplo "145" = 145.
+	}
+
+	return retorno;
+}
+
+// ---------------------------------------------------------------
+
+int utn_getNumero(int *pResultado, char *mensaje, char *mensajeError,
+		int minimo, int maximo, int reintentos) {
+	int retorno = 0;
+	int buffer;
+
+	if (pResultado != NULL && mensaje != NULL && mensajeError != NULL
+			&& minimo <= maximo && reintentos >= 0) {
+
+		do {
+			printf("%s", mensaje);
+			//scanf("%i", &buffer);
+			if (getInt(&buffer) == 1 && buffer <= maximo && buffer >= minimo) {
+				*pResultado = buffer;
+				retorno = 1;
+				break;
+			}
+			printf("%s", mensajeError);
+			reintentos--;
+		} while (reintentos >= 0);
+
+	}
+
+	return retorno;
+
+}
+
+
+
