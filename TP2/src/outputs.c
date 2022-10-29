@@ -470,7 +470,7 @@ void mostrarRegionMasJugadores(eJugador jugadores[], int tamJugadores,
 	encontrarMayorRegionJugadores(region, sudamerica, asia, oceania, centroNorteAmerica, europa, africa);
 	printf("\n---------------------------------------------------------------------------------------------------------------------");
 	printf("\nLa region con mayor cantidad de jugadores es: %s", region);
-	mostrarJugadoresSegunRegion(jugadores, tamJugadores, confede, tamConfe, region, 50);
+	mostrarJugadoresSegunRegion(jugadores, tamJugadores, confede, tamConfe, region);
 	}
 }
 /**

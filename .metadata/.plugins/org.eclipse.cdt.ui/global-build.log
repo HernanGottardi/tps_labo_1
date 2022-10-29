@@ -5522,3 +5522,22 @@ gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\outputs.o" "..\\src\\outputs.c"
 gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\TP2.o" "..\\src\\TP2.c" 
 gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\jugadores.o" "..\\src\\jugadores.c" 
 gcc -o TP2.exe "src\\TP2.o" "src\\confederacion.o" "src\\inputs.o" "src\\jugadores.o" "src\\outputs.o" 
+02:19:20 **** Incremental Build of configuration Debug for project TP2 ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\outputs.o" "..\\src\\outputs.c" 
+..\src\outputs.c: In function 'mostrarRegionMasJugadores':
+..\src\outputs.c:473:2: error: too many arguments to function 'mostrarJugadoresSegunRegion'
+  473 |  mostrarJugadoresSegunRegion(jugadores, tamJugadores, confede, tamConfe, region, 50);
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from ..\src\outputs.c:10:
+..\src\outputs.h:30:6: note: declared here
+   30 | void mostrarJugadoresSegunRegion(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[],
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+02:19:49 **** Incremental Build of configuration Debug for project TP2 ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\jugadores.o" "..\\src\\jugadores.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\outputs.o" "..\\src\\outputs.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\confederacion.o" "..\\src\\confederacion.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\inputs.o" "..\\src\\inputs.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\TP2.o" "..\\src\\TP2.c" 
+gcc -o TP2.exe "src\\TP2.o" "src\\confederacion.o" "src\\inputs.o" "src\\jugadores.o" "src\\outputs.o" 
