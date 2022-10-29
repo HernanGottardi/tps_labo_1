@@ -12,18 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-/**
- * \fn int utn_getCaracter(char*, char*, char*, char, char, int)
- * \brief
- *
- * \param pResultado
- * \param mensaje
- * \param mensajeError
- * \param minimo
- * \param maximo
- * \param reintentos
- * \return
- */
 
 int utn_getCaracter(char *pResultado, char *mensaje, char *mensajeError,
 		char minimo, char maximo, int reintentos);

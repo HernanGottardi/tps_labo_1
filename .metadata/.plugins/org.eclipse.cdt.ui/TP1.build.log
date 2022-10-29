@@ -1,1 +1,9 @@
-Info: Nothing to build for TP1
+15:21:33 **** Rebuild of configuration Debug for project TP1 ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\TP1.o" "..\\src\\TP1.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\calculos.o" "..\\src\\calculos.c" 
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\inputs.o" "..\\src\\inputs.c" 
+gcc -o TP1.exe "src\\TP1.o" "src\\calculos.o" "src\\inputs.o" 
+
+15:21:34 Build Finished. 0 errors, 0 warnings. (took 552ms)
+
