@@ -1,9 +1,3 @@
-/*
- * jugadores.c
- *
- *  Created on: 17 oct. 2022
- *      Author: herni
- */
 
 
 #include <stdio.h>
@@ -91,7 +85,7 @@ int darAltaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confed
 	int retorno = 0;
 	eJugador* pJugador;
 	pJugador = jugadores;
-	if(jugadores != NULL && tamJugadores > 0){
+	if(jugadores != NULL && tamJugadores > 0 && confeder != NULL && tamConf > 0){
 		for(int i = 0; i < tamJugadores; i++){
 			if((*(jugadores + i)).isEmpty == VACIO){
 				//INGRESO ID
@@ -113,9 +107,12 @@ int darAltaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confed
 				//CAMBIO ESTADO
 				(pJugador + i)->isEmpty = LLENO;
 				retorno = 1;
+				printf("\nLa carga de jugador salio exitosamente.\n");
 				break;
 			}
 		}
+	} else {
+		printf("\nERROR, datos invalidos.\n");
 	}
 	return retorno;
 }
@@ -131,28 +128,38 @@ int darAltaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confed
  * \param tamConfe - cantidad de estructuras del tipo eConfederacion.
  */
 
-int darBajaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[], int tamConfe){
+int darBajaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[], int tamConfe, int* contJugadores){
 	int retorno = 0;
 	int idAux;
 	char confirmar;
-
-	mostrarJugadores(jugadores, tamJugadores, confederaciones,tamConfe);
-	utn_getNumero(&idAux, "\nEscribir ID de jugador a eliminar: ", "\nError, el ID no existe", 1, tamJugadores);
-
-	if(jugadores != NULL && tamJugadores > 0){
-		for(int i = 0; i < tamJugadores; i++){
-			if( jugadores[i].isEmpty == LLENO && jugadores[i].id == idAux){
-				confirmacion("\n¿Seguro que desea darlo de baja? [s/n]: ", &confirmar);
-		     	if(confirmar == 'S'){
-		     		jugadores[i].isEmpty = VACIO;
-		     		retorno = 1;
-		     		 printf("\n--------- Se dio de baja exitosamente ---------");
-		     	} else {
-		     		printf("\n--------- Se cancelo el dar de baja ---------");
-		     	}
+	if (jugadores != NULL && tamJugadores > 0 && confederaciones != NULL && tamConfe > 0) {
+		if (verificarExistenJugadores(jugadores, tamJugadores, confederaciones, tamConfe, contJugadores) == 1) {
+			mostrarJugadores(jugadores, tamJugadores, confederaciones, tamConfe);
+			utn_getNumero(&idAux, "\nEscribir ID de jugador a eliminar: ", "\nError, el ID no existe", 1, tamJugadores);
+			if (buscarJugadorPorId(jugadores, tamJugadores, &idAux) == 1) {
+				for (int i = 0; i < tamJugadores; i++) {
+					if (jugadores[i].isEmpty == LLENO && jugadores[i].id == idAux) {
+						confirmacion("\n¿Seguro que desea darlo de baja? [s/n]: ", &confirmar);
+						if (confirmar == 'S') {
+							retorno = 1;
+							jugadores[i].isEmpty = VACIO;
+							printf("\n--------- Se dio de baja exitosamente ---------\n");
+						} else {
+							printf("\n--------- Se cancelo el dar de baja ---------\n ");
+						}
+					}
+				}
+			} else {
+				printf("\nEl ID de jugador ingresado no existe.\n");
 			}
+		} else {
+			printf("\nERROR, no se puede entrar a la opcion dar de baja hasta que se cargue al menos un jugador.\n");
+
 		}
+	} else {
+		printf("\nLa baja de jugador fallo por datos invalidos.\n");
 	}
+
 	return retorno;
 }
 /**
@@ -165,42 +172,47 @@ int darBajaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confed
  * \param confederaciones - array de estructuras del tipo eConfederacion.
  * \param tamConfe - cantidad de estructuras del tipo eConfederacion.
  */
-int modificarJugador(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[], int tamConfede){
+int modificarJugador(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[], int tamConfede, int *contador) {
 	int retorno = 0;
-	int opcionMof;
 	int idAux;
-	if(jugadores != NULL && tamJugadores > 0){
-		mostrarJugadores(jugadores, tamJugadores, confederaciones, tamConfede);
-		utn_getNumero(&idAux, "\nIngresar ID de jugador a modificar: ", "\nError, volver a ingresar: ", 1, tamJugadores);
-		for(int i = 0; i < tamJugadores; i++){
-			if(jugadores[i].id == idAux && jugadores[i].isEmpty == LLENO){
-				retorno = 1;
-				printf("\nSe encontro el jugador ingresado.");
-				printf("\n¿Que desea modificarle?");
-				printf("\n1-NOMBRE\n2-POSICION\n3-NUMERO CAMISETA\n4-ID CONFEDERACION\n5-SALARIO\n6-AÑOS CONTRATO");
-				utn_getNumero(&opcionMof, "\nIngresar opcion: ", "\nError la opcion no existe: ", 1, 6);
-				switch(opcionMof){
-				case 1:
-					modificarNombre(jugadores[i].nombre);
-					break;
-				case 2:
-					modificarPosicion(jugadores[i].posicion);
-					break;
-				case 3:
-					modificarCamiseta(&jugadores[i].numeroCamiseta);
-					break;
-				case 4:
-					modificarIdConfederacion(&jugadores[i].idConfederacion, confederaciones, tamConfede);
-					break;
-				case 5:
-					modificarSalario(&jugadores[i].salario);
-					break;
-				case 6:
-					modificarContrato(&jugadores[i].aniosContrato);
-					break;
+	if (jugadores != NULL && confederaciones != NULL && tamJugadores > 0 && tamConfede > 0) {
+		if (verificarExistenJugadores(jugadores, tamJugadores, confederaciones, tamConfede, contador) == 1) {
+			mostrarJugadores(jugadores, tamJugadores, confederaciones, tamConfede);
+			utn_getNumero(&idAux, "\nIngresar ID de jugador a modificar: ", "\nError, volver a ingresar: ", 1, tamJugadores);
+			if (buscarJugadorPorId(jugadores, tamJugadores, &idAux) == 1) {
+				for (int i = 0; i < tamJugadores; i++) {
+					if (jugadores[i].id == idAux&& jugadores[i].isEmpty == LLENO) {
+						retorno = 1;
+						switch (menuModificarJugador()) {
+						case 1:
+							modificarNombre(jugadores[i].nombre);
+							break;
+						case 2:
+							modificarPosicion(jugadores[i].posicion);
+							break;
+						case 3:
+							modificarCamiseta(&jugadores[i].numeroCamiseta);
+							break;
+						case 4:
+							modificarIdConfederacion(&jugadores[i].idConfederacion,confederaciones, tamConfede);
+							break;
+						case 5:
+							modificarSalario(&jugadores[i].salario);
+							break;
+						case 6:
+							modificarContrato(&jugadores[i].aniosContrato);
+							break;
+						}
+					}
 				}
+			} else {
+				printf("\nEl ID de jugador ingresado no existe.\n");
 			}
+		} else {
+			printf("\nERROR, no se puede entrar a la opcion modificar hasta que se cargue al menos un jugador.\n");
 		}
+	}else {
+		printf("\nLa modificacion de jugador fallo por datos invalidos.\n");
 	}
 	return retorno;
 }
@@ -353,11 +365,40 @@ int modificarContrato(short* contrato) {
 	return retorno;
 }
 
+int verificarExistenJugadores(eJugador jugadores[], int tamJugadores, eConfederacion confe[], int tamConfe, int* contadorJug){
+	int retorno = 0;
+	int contadorAux = 0;
+	if(jugadores != NULL && confe != NULL && tamJugadores > 0 && tamConfe > 0 && contadorJug != NULL){
+
+		for(int i = 0; i < tamJugadores; i++){
+			if(jugadores[i].isEmpty == LLENO){
+				for(int j = 0; j < tamConfe; j++){
+					if(jugadores[i].idConfederacion == confe[j].id && confe[j].isEmpty == LLENO){
+						contadorAux++;
+						retorno = 1;
+					}
+				}
+
+			}
+		}
+		*contadorJug = contadorAux;
+
+	}
+	return retorno;
+}
 
 
-
-
-
+int buscarJugadorPorId(eJugador jugadores[], int tamJugadores, int* idJugador){
+	int retorno = 0;
+	if(jugadores != NULL && tamJugadores > 0){
+		for(int i = 0; i < tamJugadores; i++){
+			if(jugadores[i].id == *idJugador && jugadores[i].isEmpty == LLENO){
+				retorno = 1;
+			}
+		}
+	}
+	return retorno;
+}
 
 
 

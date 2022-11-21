@@ -23,13 +23,15 @@ typedef struct{
 
 
 int inicializar_estado_jugadores(eJugador jugadores[], int tamJugadores);
+int verificarExistenJugadores(eJugador jugadores[], int tamJugadores, eConfederacion confe[], int tamConfe, int* contadorJug);
+int buscarJugadorPorId(eJugador jugadores[], int tamJugadores, int* idJugador);
 // -----------------------------------------------------------------------------------------------------------------
 int elegirPosicion (char mensaje[], char cadenaPosicion[], int tamPosicion);
 int darAltaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confeder[], int tamConf, int idAutomatico);
 // -----------------------------------------------------------------------------------------------------------------
-int darBajaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[], int tamConfe);
+int darBajaJugador(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[], int tamConfe, int* contJugadores);
 // -----------------------------------------------------------------------------------------------------------------
-int modificarJugador(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[], int tamConfeder);
+int modificarJugador(eJugador jugadores[], int tamJugadores, eConfederacion confederaciones[], int tamConfede, int*contador);
 int modificarNombre(char nombre[]);
 int modificarPosicion(char posicion[]);
 int modificarCamiseta(short *camiseta);

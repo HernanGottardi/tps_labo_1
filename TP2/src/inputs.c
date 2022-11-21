@@ -279,17 +279,25 @@ int getCadena(char mensaje[], char cadena[], int tamCadena){
 	if (tamCadena > 0 && cadena != NULL) {
 		do{
 			printf(mensaje);
-		    fflush(stdin);
+			fflush(stdin);
 			scanf("%[^\n]", buffer);
-			if(sonLetrasEspacios(buffer, strlen(buffer)) && strlen(buffer) < tamCadena){
-				retorno = 1;
-				convertirInicialesEnMayusculas(buffer, tamCadena);
-				strcpy(cadena, buffer);
-				break;
+			if (strlen(buffer) < tamCadena) {
+				if (sonLetrasEspacios(buffer, strlen(buffer)) == 1) {
+					if (cantCaracteresDistintosAEspacio(buffer, strlen(buffer))!= 0) {
+						retorno = 1;
+						convertirInicialesEnMayusculas(buffer, tamCadena);
+						strcpy(cadena, buffer);
+						break;
+					} else{
+						printf("\nERROR, no se ingresaron caracteres.\n");
+					}
+				} else {
+					printf("\nERROR, no se aceptan caracteres especiales o numericos.\n");
+				}
 			} else {
-				printf("\nError, el texto ingresado excede el limite de caracteres [max: %i] o incluye caracteres distintos a letras/espacios", tamCadena);
+				printf("\nERROR, El texto ingresado supera la cantidad maxima de caracteres.\n");
 			}
-		}while(retorno != 1);
+		} while (retorno != 1);
 	}
 	return retorno;
 }
@@ -309,13 +317,35 @@ int sonLetrasEspacios(char cadena[], int tamCadena){
 		strlwr(cadena);
 		for(int i = 0; i < tamCadena ;i++){
 			if(cadena[i] < 'a' || cadena[i] > 'z'){
-				if(cadena[i] != ' '){
-					retorno = 0;
+				retorno = 0;
+				if(cadena[i] == ' '){
+					retorno = 1;
 				}
 			}
 		}
 	}
 	return retorno;
+}
+/**
+ * \fn int cantCaracteresDistintosAEspacio(char[], int)
+ * \brief Funcion encargada de recibir una cadena de texto por parametro ingresada previamente por el usuario con el fin de
+ * comprobar si la cantidad de caracteres aceptados es mayor a 0. Devolviendo la cantidad de los mismos.
+ *
+ * \param cadena - Cadena de texto.
+ * \param tamCadena - Tamano de la cadena de texto.
+ */
+
+int cantCaracteresDistintosAEspacio(char cadena[], int tamCadena) {
+	int cantidad = 0;
+	if (cadena != NULL && tamCadena > 0) {
+		strlwr(cadena);
+		for (int i = 0; i < tamCadena; i++) {
+			if (cadena[i] >= 'a' && cadena[i] <= 'z') {
+				cantidad++;
+			}
+		}
+	}
+	return cantidad;
 }
 //--------------------------------------------------------------------
 /**
@@ -392,6 +422,43 @@ int getShort(short *pResultado) {
 		}
 	}
 	return retorno;
+}
+
+//--------------------------------------------------------------------
+
+int menuPrincipal(){
+	int opcionPrincipal;
+	printf("\nLista de opciones:");
+	printf("\n1- Dar de ALTA");
+	printf("\n2- Dar de BAJA");
+	printf("\n3- MODIFICAR");
+	printf("\n4- INFORMAR");
+	printf("\n5- ABM-Confederacion");
+	printf("\n6- SALIR");
+	//fflush(stdin);
+	utn_getNumero(&opcionPrincipal, "\nIngresar opcion: ", "\nError, ingresar numero en rango [1-6]", 1, 6);
+	return opcionPrincipal;
+}
+
+int menuModificarJugador() {
+	int opcionRetorno;
+	printf("\nSe encontro el jugador ingresado.");
+	printf("\n¿Que desea modificarle?");
+	printf("\n1-NOMBRE\n2-POSICION\n3-NUMERO CAMISETA\n4-ID CONFEDERACION\n5-SALARIO\n6-AÑOS CONTRATO");
+	utn_getNumero(&opcionRetorno, "\nIngresar opcion: ","\nError la opcion no existe: ", 1, 6);
+	return opcionRetorno;
+}
+
+int menuInformes() {
+	int opcionRetorno;
+	printf("\nLISTA DE COSAS A INFORMAR: ");
+	printf("\n1- Lista de jugadores ordenada\n2- Lista de confederaciones y sus jugadores.");
+	printf("\n3- Total y promedio de todos los salarios y cuántos jugadores cobran más del salario promedio.");
+	printf("\n4- Informar la confederación con mayor cantidad de años de contratos total.");
+	printf("\n5- Informar porcentaje de jugadores por cada confederación.");
+	printf("\n6- Informar cual es la región con más jugadores y el listado de los mismos.");
+	utn_getNumero(&opcionRetorno, "\nIngresar opcion de informe: ", "\nError, vuelva a intenar en el rango [1-6]", 1, 6);
+	return opcionRetorno;
 }
 
 

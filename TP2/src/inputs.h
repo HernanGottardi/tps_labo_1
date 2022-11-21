@@ -22,19 +22,20 @@
  int getInt(int *pResultado);
  int utn_getNumero(int *pResultado, char *mensaje, char *mensajeError, int minimo, int maximo);
 //----------------------------------------------------------------------
-
  int utn_getFloat(float*pResultado, char *mensaje, char* mensajeError, int minimo, int maximo);
  int getFloat(float *pResultado);
  int esFlotante(char *cadena);
-
 //----------------------------------------------------------------------
  int getCadena(char mensaje[], char cadena[], int tamCadena);
  int sonLetrasEspacios(char cadena[], int tamCadena);
+ int cantCaracteresDistintosAEspacio(char cadena[], int tamCadena);
  int convertirInicialesEnMayusculas(char cadena[], int tamCadena);
 //----------------------------------------------------------------------
  int getShort(short *pResultado);
  int utn_getShort(short *pResultado, char *mensaje, char *mensajeError);
-
-
+//-----------------------------------------------------------------------
+ int menuPrincipal();
+ int menuModificarJugador();
+ int menuInformes();
 
 #endif /* INPUTS_H_ */

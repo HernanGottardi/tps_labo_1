@@ -304,6 +304,12 @@ void mostrarConfederacionMasAnios(eJugador jugadores[], int tamJug, eConfederaci
 
 	}
 }
+
+float calcularPorcentaje(float* porcentaje, int* contadorJugadoresPorConfe, int* contadorTotal){
+
+	return (*porcentaje = (float) *contadorJugadoresPorConfe / *contadorTotal);
+}
+
 /**
  * \fn void mostrarPorcentajeConfe(eJugador[], int)
  * \brief Funcion encargada de mostrar el porcentaje de jugadores por cada confederacion.
@@ -313,7 +319,8 @@ void mostrarConfederacionMasAnios(eJugador jugadores[], int tamJug, eConfederaci
 
  */
 
-void mostrarPorcentajeConfe(eJugador jugadores[], int tamJugadores){
+int calcularYmostrar_PorcentajeConfe(eJugador jugadores[], int tamJugadores){
+	int retorno = 0;
 
 	int contadorJugadoresConmebol = 0;
 	float porcentajeConmebol;
@@ -329,9 +336,8 @@ void mostrarPorcentajeConfe(eJugador jugadores[], int tamJugadores){
 	float porcentajeOfc;
 
 	int contadorTotal = 0;
-
-	if(jugadores != NULL && tamJugadores > 0){
-		for(int i = 0; i < tamJugadores; i++){
+	if (jugadores != NULL && tamJugadores > 0) {
+		for (int i = 0; i < tamJugadores; i++) {
 			if (jugadores[i].isEmpty == LLENO) {
 				switch (jugadores[i].idConfederacion) {
 				case 1:
@@ -361,25 +367,28 @@ void mostrarPorcentajeConfe(eJugador jugadores[], int tamJugadores){
 				}
 			}
 		}
-
-		porcentajeConmebol = (float)contadorJugadoresConmebol * 100 / contadorTotal;
-		porcentajeAfc = (float) contadorJugadoresAfc * 100 / contadorTotal;
-		porcentajeConcacaf = (float) contadorJugadoresConcacaf * 100 / contadorTotal;
-		porcentajeCaf = (float) contadorJugadoresCaf * 100 / contadorTotal;
-		porcentajeOfc = (float) contadorJugadoresOfc * 100 / contadorTotal;
-		porcentajeUefa = (float) contadorJugadoresUefa * 100 / contadorTotal;
-
-		printf("\n---------------------------");
-		printf("\nPorcentaje CONMEBOL: %0.2f porciento", porcentajeConmebol);
-		printf("\nPorcentaje CONCACAF: %0.2f porciento", porcentajeConcacaf);
-		printf("\nPorcentaje AFC: %0.2f porciento", porcentajeAfc);
-		printf("\nPorcentaje CAF: %0.2f porciento", porcentajeCaf);
-		printf("\nPorcentaje OFC: %0.2f porciento", porcentajeOfc);
-		printf("\nPorcentaje UEFA: %0.2f porciento", porcentajeUefa);
-		printf("\n---------------------------");
-
-	}
+		calcularPorcentaje(&porcentajeConmebol, &contadorJugadoresConmebol, &contadorTotal);
+		calcularPorcentaje(&porcentajeOfc, &contadorJugadoresOfc, &contadorTotal);
+		calcularPorcentaje(&porcentajeConcacaf, &contadorJugadoresConcacaf, &contadorTotal);
+		calcularPorcentaje(&porcentajeCaf, &contadorJugadoresCaf, &contadorTotal);
+		calcularPorcentaje(&porcentajeUefa, &contadorJugadoresUefa, &contadorTotal);
+		calcularPorcentaje(&porcentajeAfc, &contadorJugadoresAfc, &contadorTotal);
+		mostrarPorcentajeConfe(&porcentajeConmebol, &porcentajeAfc, &porcentajeConcacaf, &porcentajeCaf, &porcentajeOfc, &porcentajeUefa);
+  }
+	return retorno;
 }
+
+void mostrarPorcentajeConfe(float *porcConmebol, float *porAfc,float *porConcacaf, float *porCaf, float *porOfc, float *porUefa) {
+	printf("\n---------------------------");
+	printf("\nPorcentaje CONMEBOL: %0.2f porciento", *porcConmebol);
+	printf("\nPorcentaje CONCACAF: %0.2f porciento", *porConcacaf);
+	printf("\nPorcentaje AFC: %0.2f porciento", *porAfc);
+	printf("\nPorcentaje CAF: %0.2f porciento", *porCaf);
+	printf("\nPorcentaje OFC: %0.2f porciento", *porOfc);
+	printf("\nPorcentaje UEFA: %0.2f porciento", *porUefa);
+	printf("\n---------------------------");
+}
+
 /**
  * \fn void encontrarMayorRegionJugadores(char[], int, int, int, int, int, int)
  * \brief Funcion encargada de mostrar la region con mayor cantidad de jugadores ingresados.
@@ -521,38 +530,37 @@ void mostrarJugadoresSegunRegion(eJugador jugadores[], int tamJugadores, eConfed
  * \param confederaciones - array de estructuras del tipo eConfederacion.
  * \param tamConfe - cantidad de estructuras del tipo eConfederacion.
  */
-int informar(eJugador jugadores[], int tamJugadores, eConfederacion confede[], int tamConfe){
+int informar(eJugador jugadores[], int tamJugadores, eConfederacion confede[], int tamConfe, int* contador){
 	int retorno = 0;
-	int opcion;
-	if(jugadores != NULL && tamJugadores > 0){
-		printf("\nLISTA DE COSAS A INFORMAR: ");
-		printf("\n1- Lista de jugadores ordenada\n2- Lista de confederaciones y sus jugadores.");
-		printf("\n3- Total y promedio de todos los salarios y cuántos jugadores cobran más del salario promedio.");
-		printf("\n4- Informar la confederación con mayor cantidad de años de contratos total.");
-		printf("\n5- Informar porcentaje de jugadores por cada confederación.");
-		printf("\n6- Informar cual es la región con más jugadores y el listado de los mismos.");
-		utn_getNumero(&opcion, "\nIngresar opcion de informe: ", "\nError, vuelva a intenar en el rango [1-6]", 1, 6);
-		retorno = 1;
-		switch(opcion){
-		case 1:
-			ordenarJugadores(jugadores, tamJugadores, confede, tamConfe);
-			break;
-		case 2:
-			mostrarConfederacionesConJugadores(jugadores, tamJugadores, confede, tamConfe);
-			break;
-		case 3:
-			mostrarTotalPromedio(jugadores, tamJugadores);
-			break;
-		case 4:
-			mostrarConfederacionMasAnios(jugadores, tamJugadores, confede, tamConfe);
-			break;
-		case 5:
-			mostrarPorcentajeConfe(jugadores, tamJugadores);
-			break;
-		case 6:
-			mostrarRegionMasJugadores(jugadores, tamJugadores, confede, tamConfe);
-			break;
+	if (jugadores != NULL && tamJugadores > 0) {
+		if (verificarExistenJugadores(jugadores, tamJugadores, confede,tamConfe, contador) == 1) {
+			retorno = 1;
+			switch (menuInformes()) {
+			case 1:
+				ordenarJugadores(jugadores, tamJugadores, confede, tamConfe);
+				break;
+			case 2:
+				mostrarConfederacionesConJugadores(jugadores, tamJugadores,confede, tamConfe);
+				break;
+			case 3:
+				mostrarTotalPromedio(jugadores, tamJugadores);
+				break;
+			case 4:
+				mostrarConfederacionMasAnios(jugadores, tamJugadores, confede,tamConfe);
+				break;
+			case 5:
+				calcularYmostrar_PorcentajeConfe(jugadores, tamJugadores);
+				break;
+			case 6:
+				mostrarRegionMasJugadores(jugadores, tamJugadores, confede,tamConfe);
+				break;
+			}
+		} else {
+			printf("\nERROR, no se puede entrar a la opcion informes hasta que se cargue al menos un jugador.\n");
 		}
+	} else {
+		printf("\nERROR, datos invalidos.");
 	}
+
 	return retorno;
 }
